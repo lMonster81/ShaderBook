@@ -1,11 +1,7 @@
-// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
-//逐顶点光照
-///
-Shader "Unlit/MyShader6_1"
+﻿Shader "Unlit/MyShader6_3"
 {
     Properties
     {
-        //漫反射的颜色
         _Diffuse("Diffuse", Color) = (1,1,1,1)
     }
     SubShader
@@ -50,7 +46,9 @@ Shader "Unlit/MyShader6_1"
                 //世界空间下指向光源的平行光方向
                 fixed3 worldLight = normalize(_WorldSpaceLightPos0.xyz);
                 //兰伯特经验模型
-                fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * saturate(dot(worldNormal, worldLight));
+                //原本用saturate函数，将小于0的值都变成0，这样阴影部分的数值将没有变化，都为0  。
+                //但是如果用半兰伯特模型，只要不是叉乘-1，都会有变化，原本无细节变化的阴影处也有细节变化了。相当于阴影处整体提亮
+                fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * (dot(worldNormal, worldLight) * 0.5 + 0.5);
 
                 o.color = ambient + diffuse;
 
