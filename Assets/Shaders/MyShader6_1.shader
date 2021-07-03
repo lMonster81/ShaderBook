@@ -5,7 +5,7 @@ Shader "Unlit/MyShader6_1"
 {
     Properties
     {
-        //漫反射的颜色
+        //漫反射的颜色,可以理解为材质，物体吸收了光，反射出什么颜色
         _Diffuse("Diffuse", Color) = (1,1,1,1)
     }
     SubShader
